@@ -278,6 +278,31 @@ volumes:
 
 ---
 
+## package.json
+
+### Basic
+```json
+{
+    "name": "@imaginary-machines/everything-all-of-the-time",
+    "private": true,
+    "version": "0.1.0",
+    "license": "GPL-2.0-or-later",
+    "main": "build/index.js",
+    "scripts": {
+        "build": "wp-scripts build",
+        "lint:css": "wp-scripts lint-style",
+        "lint:js": "wp-scripts lint-js",
+        "start": "wp-scripts start"
+    },
+    "devDependencies": {
+        "@wordpress/scripts": "^16"
+    }
+}
+```
+
+---
+
+
 ## Automated Tests
 
 - Guide development.
@@ -288,8 +313,6 @@ volumes:
 - Surfacing a11y issues
 
 ### What
-
-
 
 
 ---
@@ -355,18 +378,117 @@ volumes:
 
 ---
 
+## JSX
+
+- React's template syntax
+- Not required for React or blocks
+  - Worth using for sure.
+- HTML and JavaScript together
 
 ---
 
 ## JSX
 
+```jsx
+//React component with JSX
+function Alert({message}){
+    return (
+        <div>
+            <p className="alert">
+            {message}</p>
+        </div>
+    );
+}
+
+<Alert message="Hi Roy" />
+```
+
+Renders as:
+
+```html
+<div>
+    <p class="alert">
+        Hi Roy
+    </p>
+</div>
+```
 
 ---
+## JSX
+
+```jsx
+//React component with JSX
+function Alert({message}){
+    return (
+        <div>
+            <p className="alert">
+            {message}</p>
+        </div>
+    );
+}
+
+```
+
+Is the same as:
+
+```javascript
+//React component without JSX
+function Alert({message}){
+    return React.createElement( 'div', {},[
+        React.createElement( 'p', {
+            className: 'alert'
+        }, [ message ])
+    ]);
+}
+```
+---
+
 
 ## Testing JavaScript
 
----
+- [Use Jest, via WordPress Scripts](https://fbjest.io)
+- Generally need a React testing library in adittion to Jest.
+  - I recommend [@testing-library/react]()
+- [Slides For My JavaScript Testing Talk](https://shelob9.github.io/testing-javascript-in-and-around-wordpress/)
 
+
+## Testing JavaScript
+
+### Whypackage.json With Tests
+
+```json
+{
+    "name": "@imaginary-machines/everything-all-of-the-time",
+    "private": true,
+    "version": "0.1.0",
+    "license": "GPL-2.0-or-later",
+    "main": "build/index.js",
+    "scripts": {
+        "test": "yarn test:unit",
+        "test:unit": "wp-scripts test-unit-js",
+        "build": "wp-scripts build",
+        "test:ci": "wp-scripts test-unit-js --ci",
+        "format:js": "wp-scripts format-js",
+        "lint:css": "wp-scripts lint-style",
+        "lint:js": "wp-scripts lint-js",
+        "start": "wp-scripts start"
+    },
+    "devDependencies": {
+        "@babel/core": "^7",
+        "@testing-library/react": "^12",
+        "@wordpress/scripts": "^16",
+    },
+    "dependencies": {
+        "@wordpress/block-editor": "^6",
+        "@wordpress/blocks": "^9",
+        "@wordpress/components": "^14",
+        "@wordpress/element": "^3",
+        "@wordpress/i18n": "^4"
+    }
+}
+```
+
+---
 ## CI/ CD
 
 ---
