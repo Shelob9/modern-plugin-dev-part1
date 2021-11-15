@@ -1,6 +1,11 @@
-import { Head, Notes,useSteps  } from 'mdx-deck'
+import { Head, Notes,future, highlight  } from 'mdx-deck'
 import { theme } from './theme'
-export const themes = [ theme ]
+export const themes = [
+  {...future,
+  ...highlight,
+  ...theme
+  }
+]
 
 <Head>
   <title>
@@ -12,6 +17,7 @@ export const themes = [ theme ]
 # The Modern WordPress Plugin Development Toolset (Part 1)
 
 Josh Pollock | @josh412 | Josh412.eth
+
 
 ---
 
@@ -27,8 +33,26 @@ Create speaker notes with the Notes component
 
 ## The WordPress Stack
 
+- Client (Browser)
+  - JavaScript/ CSS/ HTML
+- Server
+  - PHP
+- Database
+  - MySQL
+
 ---
 
+
+## React In WordPress
+
+
+- Used in block editor
+- Can be used for:
+  - Admin pages
+  - Front-end
+  - Headless builds
+
+---
 
 ## Developer Tooling
 
@@ -81,27 +105,97 @@ Create speaker notes with the Notes component
 
 ---
 
+## Dependency Management
+
+
+- For PHP: Composer
+- For JavaScript: yarn or yarn
+
+---
 ## Composer
 
+- Adding packages
+- Running scripts
+- PHP autoloader
 
 ---
 
 ## npm (or Yarn)
 
+
+- Add additional functionality
+  - For example: component library, API client, utility functions, etc.
+- Compile code so it can run in the browser and optimize it
+  - Babel, webpack, etc.
+- Running scripts
+- Configuring Packages
+
 ---
 
-## Automated Testing
+## Automated Tests
+
+- Guide development.
+- Prevent regression errors.
+- Makes clear how the code is supposed to work.
+- Debugging errors.
+- Profiling performance.
+- Surfacing a11y issues
+
+### What
+
+
+
+
+---
+
+## Automated Tests
+
+### Why Use
+
+- Guide development.
+- Prevent regression errors.
+- Makes clear how the code is supposed to work.
+- Debugging errors.
+- Profiling performance.
+- Surfacing a11y issues
 
 ---
 
 ## phpunit
 
+- PHP test runner and assertions.
+- Can be used with or without WordPress test suite.
+
 ---
 
 ## WordPress Scripts
 
+- Compiles
+  - WordPress-safe.
+  - Works with `p_register_script/style()`
+- Lints
+- Runs tests
+  - Uses and configures Jest.
+
+---
+## Compiling JavaScript
+
+### Why
+
+- Allows for alternative syntaxes
+  - JSX
+- Optimize JavaScript
+- Optimize CSS
+
 ---
 
+
+---
+
+## JSX
+
+
+---
 
 ## Testing JavaScript
 
