@@ -104,6 +104,118 @@ Create speaker notes with the Notes component
 
 ---
 
+## Docker Compose
+
+### Basic
+
+```yml
+version: "3.9"
+
+services:
+
+  wordpress:
+    depends_on:
+      - wpdb
+    image: wordpress:latest
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/everything-all-of-the-time
+    ports:
+      - "6100:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: wpdb:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
+  wpdb:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+```
+
+---
+
+## Docker Compose
+
+### With WPCLI And Tests
+
+```yml
+version: "3.9"
+
+services:
+
+  wordpress:
+    depends_on:
+      - wpdb
+    image: wordpress:latest
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/everything-all-of-the-time
+    ports:
+      - "6100:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: wpdb:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
+  wpdb:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wpcli:
+    image: wordpress:cli
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/everything-all-of-the-time
+      - ./db:/var/www/html/db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      ABSPATH: /usr/src/wordpress/
+
+  phpunit:
+    command:
+      - bash
+    depends_on:
+      - testwpdb
+    environment:
+      DATABASE_PASSWORD: examplepass
+      DATABASE_HOST: testwpdb
+    image: futureys/phpunit-wordpress-plugin
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/plugin
+
+  testwpdb:
+      environment:
+        MYSQL_ROOT_PASSWORD: examplepass
+      image: mysql:5.7
+
+volumes:
+  db_data: {}
+  wordpress_data: {}
+```
+
 ## Dependency Management
 
 
@@ -130,30 +242,6 @@ Create speaker notes with the Notes component
     "type": "wordpress-plugin",
     "require": {
         "php": "^7.2|^8.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "AllOfTheThings\\": "./php"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "AllOfTheThings\\Tests\\": "./tests"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^7.0",
-        "yoast/phpunit-polyfills": "^0.1.0",
-        "mockery/mockery": "1.2",
-        "brain/monkey": "2.*",
-        "squizlabs/php_codesniffer": "^3.6"
-    },
-    "scripts": {
-        "test": "composer test:unit && composer test:wordpress",
-        "test:unit": "phpunit --config=phpunit-unit.xml",
-        "test:wordpress": "phpunit --config=phpunit-integration.xml",
-        "sniffs": "phpcs php/ && phpcs tests/",
-        "fixes": "phpcbf php/ && phpcbf tests/"
     }
 }
 ```
