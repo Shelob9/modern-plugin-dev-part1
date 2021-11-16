@@ -52,7 +52,7 @@ Josh Pollock | [@josh412](https://twitter.com/josh412) | [JoshPress.net](https:/
 - What we use to make WordPress
 
 
-- [Download Slides]()
+- [Download Slides](https://joshpress.net/slides/modern-wp-plugin-dev-part-1)
 
 <Notes>
 Create speaker notes with the Notes component
@@ -89,6 +89,7 @@ Create speaker notes with the Notes component
 - Optimize for browser.
 - Automated testing
 
+---
 
 ## Developer Tooling
 
@@ -269,8 +270,16 @@ volumes:
 - Running scripts
 - PHP autoloader
 
-- [Install Composer](https://getcomposer.org/download/)
 
+---
+
+## Composer
+
+### Install
+- [Install Composer](https://getcomposer.org/download/)
+- For Windows, download installer.
+- For Mac/ Linux, follow latest instructions
+  - `sudo mv composer.phar /usr/local/bin/composer`
 ---
 
 ## Composer
@@ -428,7 +437,9 @@ expect(add(2,2)).toBe(4);
 
 ---
 
-## Composer For phpunit
+## Automated Tests
+
+### Composer For phpunit
 
 
 ```json
@@ -448,6 +459,88 @@ expect(add(2,2)).toBe(4);
 ```
 ---
 
+## Automated Tests
+
+### Example Unit Test
+
+
+```php
+
+class Url {
+  protected $baseUrl;
+  public function __construct($baseUrl)
+  public function getUrl($endpoint){
+    return sprintf("%s/%s",$this->baseUrl,$endpoint);
+  }
+}
+class UrlTest extends \PHPUnit\Framework\TestCase
+{
+
+    public function testGetUrl()
+    {
+        $url = new Url('https://hiroy.club');
+        $this->assertEquals(
+          'https://hiroy.club/api',
+          $url->getUrl('/api')
+        );
+    }
+
+```
+---
+
+## Automated Tests
+
+### Example Unit Test With Mock
+
+- [Brain Monkey](https://giuseppe-mazzapica.gitbook.io/brain-monkey/)
+
+```php
+
+class UrlTest extends \PHPUnit\Framework\TestCase
+{
+
+    /**
+     * Test that we can mock WordPress functions
+     *
+     * @see https://giuseppe-mazzapica.gitbook.io/brain-monkey/functions-testing-tools/functions-when#justreturn
+     */
+    public function testMockWordPressFunction(){
+        //A fake wp_insert_post() that always returns 1
+        Functions\when('wp_insert_post' )->justReturn(1);
+        $this->assertIsNumeric(
+            wp_insert_post([
+                'post_title' => 'Succulents',
+                'post_content' => 'lithops and echeveria'
+            ])
+        );
+        $this->assertSame(1,wp_insert_post());
+    }
+
+```
+---
+
+## Automated Tests
+
+### Example Integration Test Without Mock
+
+
+```php
+class SomethingTest extends \PHPUnit\Framework\TestCase
+{
+
+    public function testInsertPost(){
+        $post_id =  wp_insert_post([
+          'post_title' => 'Succulents',
+          'post_content' => 'lithops and echeveria'
+        ]);
+        $this->assertIsNumeric($post_id);
+    }
+
+```
+---
+
+
+
 ## [WordPress Scripts](https://www.npmjs.com/package/@wordpress/scripts)
 
 - Compiles
@@ -455,7 +548,7 @@ expect(add(2,2)).toBe(4);
   - Works with `wp_register_script/style()`
 - Lints
 - Runs tests
-  - Uses and configures Jest.
+  - Uses and configures [Jest](https://jestjs.io/).
 
 ---
 
@@ -464,7 +557,7 @@ expect(add(2,2)).toBe(4);
 ### Why
 
 - Allows for alternative syntaxes
-  - JSX
+  - [JSX](https://reactjs.org/docs/introducing-jsx.html)
 - Optimize JavaScript
 - Optimize CSS
 
@@ -473,7 +566,7 @@ expect(add(2,2)).toBe(4);
 ## JSX
 
 - React's template syntax
-- Not required for React or blocks
+- Not required  or blocks
   - Worth using for sure.
 - HTML and JavaScript together
 
@@ -540,9 +633,9 @@ function Alert({message}){
 
 ## Testing JavaScript
 
-- [Use Jest, via WordPress Scripts](https://fbjest.io)
+- [Use Jest, via WordPress Scripts](https://jestjs.io/)
 - Generally need a React testing library in adittion to Jest.
-  - I recommend [@testing-library/react]()
+  - I recommend [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/)
 - [Slides For My JavaScript Testing Talk](https://shelob9.github.io/testing-javascript-in-and-around-wordpress/)
 
 ---
@@ -584,6 +677,61 @@ function Alert({message}){
 ```
 
 ---
-## CI/ CD
 
 ---
+
+## Testing JavaScript
+
+### Example
+
+```js
+
+//Import React
+import React from 'react';
+//Import test renderer
+import { render, fireEvent, cleanup } from '@testing-library/react';
+//Import component to test
+import { Editor } from './Edit';
+
+
+describe("Editor componet", () => {
+    afterEach(cleanup);
+    it('matches snapshot when selected', () => {
+        const onChange = jest.fn();
+        const { container } = render(<Editor
+            onChange={onChange}
+            value={'Tacos'}
+            isSelected="true"
+        />);
+        expect(container).toMatchSnapshot();
+    });
+
+
+    it("Calls the onchange function", () => {
+        const onChange = jest.fn();
+        const { getByDisplayValue } = render(<Editor
+            onChange={onChange}
+            value={'Salad'}
+            isSelected="false"
+        />);
+        fireEvent.change(getByDisplayValue("Salad"), {
+            target: { value: "New Value" }
+        });
+        expect(onChange).toHaveBeenCalledTimes(1);
+    });
+
+});
+```
+
+---
+## Demo Code
+
+- [https://github.com/imaginarymachines/everything-all-of-the-time](https://github.com/imaginarymachines/everything-all-of-the-time)
+
+---
+
+## Thank You
+
+Josh Pollock | [@josh412](https://twitter.com/josh412) | [JoshPress.net](https://joshpress.net)
+
+- [Plugin Machine](https://pluginmachine.com)
