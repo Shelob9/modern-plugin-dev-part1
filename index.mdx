@@ -1,28 +1,58 @@
-import { Head, Notes,future, highlight  } from 'mdx-deck'
-import { theme } from './theme'
-export const themes = [
-  {...future,
-  ...highlight,
-  ...theme
+import { Head, Notes,Image  } from 'mdx-deck'
+import { code,future, highlight, } from '@mdx-deck/themes'
+export const theme = { ...future, ...highlight,...code,...{
+    colors: {
+      background:'rgb(1, 116, 162)'
+    },
+    h1: {
+      textTransform: 'uppercase',
+      letterSpacing: '0.1em'
+    },
+    styles: {
+      h1: {
+        textAlign: 'center',
+      },
+      a: {
+        color: 'white'
+      }
+    }
   }
-]
+}
+
+
 
 <Head>
   <title>
     The Modern WordPress Plugin Development Toolset (Part 1)
   </title>
-
 </Head>
 
-# The Modern WordPress Plugin Development Toolset (Part 1)
+# The Modern WordPress Plugin Development Toolset
+## (Part 1)
 
-Josh Pollock | @josh412 | Josh412.eth
+Josh Pollock | [Plugin Machine](https://pluginmachine.com)
+
+---
+
+## About Me
+
+Josh Pollock | [@josh412](https://twitter.com/josh412) | [JoshPress.net](https://joshpress.net)
+
+- PHP & JavaScript Engineer
+- Working on [Plugin Machine](https://pluginmachine.com)
+- WordPress core contributor
+- ex: 10up, Ninja Forms, Caldera Forms, Pods.
 
 ---
 
 ## What We Will Cover
 
-To create your presentation
+
+- What WordPress is made of
+- What we use to make WordPress
+
+
+- [Download Slides]()
 
 <Notes>
 Create speaker notes with the Notes component
@@ -53,6 +83,13 @@ Create speaker notes with the Notes component
 
 ---
 
+## Why Developer Tooling For React?
+
+- React is generally written in JSX, not JavaScript.
+- Optimize for browser.
+- Automated testing
+
+
 ## Developer Tooling
 
 * Local Development Environment
@@ -79,15 +116,15 @@ Create speaker notes with the Notes component
 ### Solutions
 
 * Docker
-  - docker-compose
-  - 10up Docker
-  - Lando
+  - [docker-compose](https://docs.docker.com/samples/wordpress/)
+    - [WP Local Docker](https://github.com/10up/wp-local-docker-v2)
+    - [Lando](https://docs.lando.dev/config/wordpress.html)
 * WordPress-specific GUI Apps
-  - Desktop Server
-  - Local by flywheel
+  - [Desktop Server](https://serverpress.com/)
+  - [LocalWP](https://localwp.com/)
 * Virtual Machine
-  - vvv
-  - Homestead
+  - [vvv](https://varyingvagrantvagrants.org/)
+  - [Homestead](https://pressable.com/setting-wordpress-laravel-homestead/)
 ---
 
 ## Local Development
@@ -216,6 +253,8 @@ volumes:
   wordpress_data: {}
 ```
 
+---
+
 ## Dependency Management
 
 
@@ -223,11 +262,14 @@ volumes:
 - For JavaScript: yarn or yarn
 
 ---
+
 ## Composer
 
 - Adding packages
 - Running scripts
 - PHP autoloader
+
+- [Install Composer](https://getcomposer.org/download/)
 
 ---
 
@@ -266,8 +308,13 @@ volumes:
 }
 ```
 
+- [Using PHP Namespaces And Autoloaders In WordPress Plugins](https://joshpress.net/blog/php-namespaces).
+
+---
+
 ## npm (or Yarn)
 
+### Why
 
 - Add additional functionality
   - For example: component library, API client, utility functions, etc.
@@ -275,6 +322,16 @@ volumes:
   - Babel, webpack, etc.
 - Running scripts
 - Configuring Packages
+
+---
+
+## npm (or Yarn)
+
+### Install
+
+- npm is installed with node
+  - [Install Node](https://nodejs.org/en/download/)
+  - Install yarn: `npm install -g yarn`
 
 ---
 
@@ -312,8 +369,42 @@ volumes:
 - Profiling performance.
 - Surfacing a11y issues
 
-### What
+---
 
+
+## Automated Tests
+
+```php
+
+function add($one, $two){
+  return $one + $two;
+}
+
+class SampleTest extends \PHPUnit\Framework\TestCase
+{
+
+    public function testAdd()
+    {
+        $this->assertEquals(
+          4, add(2,2)
+        );
+    }
+
+```
+
+---
+
+## Automated Tests
+
+```js
+
+function add($one, $two){
+  return $one + $two;
+}
+
+expect(add(2,2)).toBe(4);
+
+```
 
 ---
 
@@ -357,16 +448,17 @@ volumes:
 ```
 ---
 
-## WordPress Scripts
+## [WordPress Scripts](https://www.npmjs.com/package/@wordpress/scripts)
 
 - Compiles
   - WordPress-safe.
-  - Works with `p_register_script/style()`
+  - Works with `wp_register_script/style()`
 - Lints
 - Runs tests
   - Uses and configures Jest.
 
 ---
+
 ## Compiling JavaScript
 
 ### Why
@@ -414,6 +506,7 @@ Renders as:
 ```
 
 ---
+
 ## JSX
 
 ```jsx
@@ -444,6 +537,7 @@ function Alert({message}){
 ---
 
 
+
 ## Testing JavaScript
 
 - [Use Jest, via WordPress Scripts](https://fbjest.io)
@@ -451,10 +545,11 @@ function Alert({message}){
   - I recommend [@testing-library/react]()
 - [Slides For My JavaScript Testing Talk](https://shelob9.github.io/testing-javascript-in-and-around-wordpress/)
 
+---
 
 ## Testing JavaScript
 
-### Whypackage.json With Tests
+### package.json With Tests
 
 ```json
 {
