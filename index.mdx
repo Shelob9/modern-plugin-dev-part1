@@ -52,13 +52,22 @@ Josh Pollock | [@josh412](https://twitter.com/josh412) | [JoshPress.net](https:/
 - What we use to make WordPress
 
 
-- [Download Slides](https://joshpress.net/slides/modern-wp-plugin-dev-part-1)
+- [View Slides](https://joshpress.net/slides/modern-wp-plugin-dev-part-1)
 
 <Notes>
 Create speaker notes with the Notes component
 </Notes>
 
 ---
+
+## Slides And Code
+
+- [View Slides](https://joshpress.net/slides/modern-wp-plugin-dev-part-1)
+- [Source Code For Slides](https://github.com/Shelob9/modern-plugin-dev-part1)
+- [https://github.com/imaginarymachines/everything-all-of-the-time](https://github.com/imaginarymachines/everything-all-of-the-time)
+
+---
+
 
 ## The WordPress Stack
 
@@ -93,6 +102,7 @@ Create speaker notes with the Notes component
 
 ## Developer Tooling
 
+* IDE
 * Local Development Environment
 * Dependency Management
 * Automated Testing
@@ -102,13 +112,35 @@ Create speaker notes with the Notes component
 
 ---
 
+## IDE
+
+### Integrated Developer Environment
+
+* Code editor plus other development tools.
+
+---
+## IDE
+
+### Some Good Ones
+
+- [vScode](https://code.visualstudio.com/)
+  - What I use.
+- [phpStorm](https://www.jetbrains.com/phpstorm/)
+  - What I used to use.
+- [Atom](https://ide.atom.io/)
+
+
+---
+
 ## Local Development
 
 ### Why
 
-* Isolation
-* Common setup for all developers on a project
-* Automated configuration
+- Isolation
+  - Don't want to break live site
+- Common setup for all developers on a project
+  - Automated configuration
+  - Consitency
 
 ---
 
@@ -120,6 +152,7 @@ Create speaker notes with the Notes component
   - [docker-compose](https://docs.docker.com/samples/wordpress/)
     - [WP Local Docker](https://github.com/10up/wp-local-docker-v2)
     - [Lando](https://docs.lando.dev/config/wordpress.html)
+    - [@wordpress/env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/)
 * WordPress-specific GUI Apps
   - [Desktop Server](https://serverpress.com/)
   - [LocalWP](https://localwp.com/)
@@ -260,14 +293,16 @@ volumes:
 
 
 - For PHP: Composer
-- For JavaScript: yarn or yarn
+- For JavaScript: npm or yarn
 
 ---
 
 ## Composer
 
-- Adding packages
-- Running scripts
+- Add packages to your plugin or site
+  - Use dependencies from [packagist](https://packagist.org/)
+  - Install plugins or themes using [wpackagist.org/](https://wpackagist.org/)
+- Runn scripts
 - PHP autoloader
 
 
@@ -284,7 +319,7 @@ volumes:
 
 ## Composer
 
-### Basic
+### Basic composer.json
 
 ```json
 {
@@ -300,7 +335,7 @@ volumes:
 
 ## Composer
 
-### Autoloader
+### composer.json with Autoloader
 
 ```json
 {
@@ -329,8 +364,8 @@ volumes:
   - For example: component library, API client, utility functions, etc.
 - Compile code so it can run in the browser and optimize it
   - Babel, webpack, etc.
-- Running scripts
-- Configuring Packages
+- Run scripts
+- Configure Packages
 
 ---
 
@@ -371,18 +406,6 @@ volumes:
 
 ## Automated Tests
 
-- Guide development.
-- Prevent regression errors.
-- Makes clear how the code is supposed to work.
-- Debugging errors.
-- Profiling performance.
-- Surfacing a11y issues
-
----
-
-
-## Automated Tests
-
 ```php
 
 function add($one, $two){
@@ -405,28 +428,12 @@ class SampleTest extends \PHPUnit\Framework\TestCase
 
 ## Automated Tests
 
-```js
-
-function add($one, $two){
-  return $one + $two;
-}
-
-expect(add(2,2)).toBe(4);
-
-```
-
----
-
-## Automated Tests
-
-### Why Use
-
 - Guide development.
 - Prevent regression errors.
 - Makes clear how the code is supposed to work.
 - Debugging errors.
 - Profiling performance.
-- Surfacing a11y issues
+- Surfacing accessibility issues
 
 ---
 
@@ -439,7 +446,7 @@ expect(add(2,2)).toBe(4);
 
 ## Automated Tests
 
-### Composer For phpunit
+### composer.json for phpunit
 
 
 ```json
@@ -539,7 +546,21 @@ class SomethingTest extends \PHPUnit\Framework\TestCase
 ```
 ---
 
+---
 
+## Automated Tests
+
+```js
+
+function add($one, $two){
+  return $one + $two;
+}
+
+expect(add(2,2)).toBe(4);
+
+```
+
+---
 
 ## [WordPress Scripts](https://www.npmjs.com/package/@wordpress/scripts)
 
@@ -675,8 +696,6 @@ function Alert({message}){
     }
 }
 ```
-
----
 
 ---
 
