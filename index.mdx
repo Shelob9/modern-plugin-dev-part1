@@ -123,7 +123,7 @@ Create speaker notes with the Notes component
 
 ### Some Good Ones
 
-- [vScode](https://code.visualstudio.com/)
+- [vsCode](https://code.visualstudio.com/)
   - What I use.
 - [phpStorm](https://www.jetbrains.com/phpstorm/)
   - What I used to use.
@@ -301,7 +301,7 @@ volumes:
 
 - Add packages to your plugin or site
   - Use dependencies from [packagist](https://packagist.org/)
-  - Install plugins or themes using [wpackagist.org/](https://wpackagist.org/)
+  - Install plugins or themes using [wpackagist](https://wpackagist.org/)
 - Runn scripts
 - PHP autoloader
 
@@ -743,8 +743,103 @@ describe("Editor componet", () => {
 ```
 
 ---
-## Demo Code
+## Code Quality Analysis
 
+- Tests check code by running it in various ways.
+- Code quality analysis parses the code and detetchs likely issues.
+
+---
+
+## Code Quality Analysis
+
+- Linters
+  - Does code follow coding standards?
+  - Are bad smelling patterns used?
+  - Is the code using deprecated functions?
+- Static Analysis
+  - Are variable types correct?
+  - Predicts compile-time errors.
+
+---
+
+## Code Quality Analysis
+
+- Linters
+  - [Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer)
+    - [WordPress Standards For Code Sniffer](https://github.com/WordPress/WordPress-Coding-Standards)
+    - [PHPCompatibilityWP](https://github.com/PHPCompatibility/PHPCompatibilityWP)
+- Static Analysis
+  - [PHP Stan](https://phpstan.org/blog/find-bugs-in-your-code-without-writing-tests)
+    - [WordPress Extension for PHP Stan](https://github.com/szepeviktor/phpstan-wordpress)
+---
+## CI/CD
+
+### What
+
+- CI: Continuous integration.
+  - Using automtion to continously test, analysis and merge changes to code.
+- CD: Continous deployment.
+  - Using automation to continously deploy code.
+
+---
+
+## CI/CD
+
+
+### Services
+- [Github Actions](https://github.com/features/actions)
+- [Circle CI](https://circleci.com/)
+- [Gitlab CI](https://docs.gitlab.com/ee/ci/)
+- [BranchCI](https://www.branchci.com/)
+- [Buddy Works](https://buddy.works/guides/wordpress)
+---
+
+## CI/ Code
+
+### Example Github Action
+
+```yml
+name: PHP Unit Tests
+
+on: push
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: [ 7.2, 7.3, 7.4 ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+      # Install composer with cache
+      ## See https://github.com/marketplace/actions/setup-php-action#cache-composer-dependencies
+      - name: Get composer cache directory
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: php-${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Install dependencies
+        run: composer install --prefer-dist
+
+      # Run unit tests
+      - name : Unit Tests
+        run: composer test:unit
+```
+
+## Live Demo Time
+
+- [View Slides](https://joshpress.net/slides/modern-wp-plugin-dev-part-1)
+- [Source Code For Slides](https://github.com/Shelob9/modern-plugin-dev-part1)
 - [https://github.com/imaginarymachines/everything-all-of-the-time](https://github.com/imaginarymachines/everything-all-of-the-time)
 
 ---
